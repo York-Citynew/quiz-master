@@ -1,0 +1,39 @@
+.category-card-container {
+  margin-top: 1.5em;
+  width: 100%;
+  position: relative;
+  padding: 1em 0 1em 1em;
+  border-radius: 1.8em;
+  background-color: #3a355a;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  .category-card-info-container {
+    opacity: 0.7;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    h3,
+    span {
+      margin: 0.5em;
+      padding: 0.5em;
+      background-color: #a350a3;
+      border-radius: 0.4em;
+      color: white;
+    }
+  }
+  img {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    height: 120%;
+    transition: scale 0.1s ease-in-out;
+  }
+  &:hover {
+    img {
+      scale: 1.1;
+    }
+  }
+}

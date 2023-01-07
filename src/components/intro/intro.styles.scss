@@ -1,0 +1,57 @@
+.intro-container {
+  height: calc(100vh - 3em);
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+}
+.intro-content-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  position: absolute;
+}
+.intro-text {
+  margin-left: 1em;
+  float: left;
+  color: #c1436d;
+  font-family: "kanit";
+  font-weight: 700;
+  line-height: 1.3em;
+  font-size: 8.5vw;
+}
+.hero-text {
+  font-size: 10vw;
+  color: #c850c0;
+  background: linear-gradient(305deg, #ffcc70, #c850c0, #4158d0);
+  background-size: 600% 600%;
+  animation: gradmation 10s ease infinite;
+  -webkit-background-clip: text; //TODO: support for all browsers
+  -moz-background-clip: text;
+  color: transparent;
+}
+.triangle-intro {
+  position: absolute;
+  align-self: flex-end;
+  background: linear-gradient(305deg, #ffcc70, #c850c0, #4158d0);
+  background-size: 600% 600%;
+  animation: gradmation 10s ease infinite;
+  clip-path: polygon(100% 0, 0% 100%, 100% 100%);
+  width: 100%;
+  height: 100vh;
+  z-index: -1;
+}
+
+@keyframes gradmation {
+  0% {
+    background-position: 0% 62%;
+  }
+  50% {
+    background-position: 100% 39%;
+  }
+  100% {
+    background-position: 0% 62%;
+  }
+}

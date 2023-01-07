@@ -1,0 +1,24 @@
+.result-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  .test-result-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    .test-options {
+      display: inline;
+      border-radius: 0.2em;
+      color: white;
+      margin: 0.5em 1em;
+      padding: 0.2em;
+    }
+  }
+}
+.correct {
+  background-color: #00ff00;
+}
+.wrong {
+  background-color: #d77d7d;
+}
