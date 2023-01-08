@@ -15,7 +15,7 @@ const backdropVariants = {
   exit: {
     opacity: 0,
     transition: {
-      when: "beforeChildren",
+      when: "afterChildren",
     },
   },
 };
@@ -36,23 +36,23 @@ const Modal = ({ children }) => {
     e.target.className === "backdrop" && dispatch(setIsActive(""));
   };
   return (
-    <AnimatePresence wait>
+    // <AnimatePresence mode='wait'>
+    <motion.div
+      variants={backdropVariants}
+      initial='initial'
+      animate='animate'
+      exit='exit'
+      className='backdrop'
+      onClick={backdropCancelHandler}
+    >
       <motion.div
-        variants={backdropVariants}
-        initial='initial'
-        animate='animate'
-        exit='exit' //now working
-        className='backdrop'
-        onClick={backdropCancelHandler}
+        variants={modalVariants}
+        className='modal-container'
       >
-        <motion.div
-          variants={modalVariants}
-          className='modal-container'
-        >
-          {children}
-        </motion.div>
+        {children}
       </motion.div>
-    </AnimatePresence>
+    </motion.div>
+    // </AnimatePresence>
   );
 };
 export default Modal;

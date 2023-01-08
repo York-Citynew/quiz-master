@@ -4,7 +4,7 @@ import "./home.styles.scss";
 import CategoryCards from "../../components/category-cards/category-cards.component";
 import Modal from "../../components/modal/modal.component";
 import GameConfig from "../../components/game-config/game-config.component";
-import { useViewportScroll } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 const CATEGORY_CARDS = [
   {
     title: "Video Games",
@@ -26,16 +26,16 @@ const CATEGORY_CARDS = [
   },
 ];
 const Home = () => {
-  const { scrollYProgress } = useViewportScroll();
-  console.log(scrollYProgress);
   const { isActive } = useSelector((state) => state.modal);
   return (
     <div className='home-container'>
-      {isActive && (
-        <Modal>
-          <GameConfig />
-        </Modal>
-      )}
+      <AnimatePresence mode='wait'>
+        {isActive && (
+          <Modal>
+            <GameConfig />
+          </Modal>
+        )}
+      </AnimatePresence>
       <Intro />
       <span
         id='choose-text-id'
