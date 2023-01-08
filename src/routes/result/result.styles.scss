@@ -16,9 +16,12 @@
     }
   }
 }
-.correct {
+.win {
   background-color: #00ff00;
 }
-.wrong {
+.loss {
   background-color: #d77d7d;
+}
+.correct {
+  background-color: rgb(51, 51, 161);
 }

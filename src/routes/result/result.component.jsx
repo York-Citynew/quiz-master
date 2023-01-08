@@ -37,7 +37,13 @@ const Result = () => {
                   return (
                     <li
                       className={`test-options ${
-                        item.selectedValue === option ? "correct" : "wrong"
+                        item.selectedValue === option &&
+                        item.selectedValue === item.correct_answer
+                          ? "win"
+                          : // : "loss"
+                          item.selectedValue === option
+                          ? "correct"
+                          : "loss"
                       }`}
                       key={option}
                     >
@@ -49,7 +55,7 @@ const Result = () => {
             </ul>
           </div>
         ))}
-        <span>{score}</span>
+        <span>final score: {score}</span>
       </div>
       <Button
         buttonType={BUTTON_TYPES.MAIN}
