@@ -2,6 +2,22 @@ import IntroCurve from "../../assets/intro-curve.component";
 import "./intro.styles.scss";
 import { buttonVariants } from "../button/button.component";
 import { motion } from "framer-motion";
+const heroButtonVariants = {
+  scalingLoop: {
+    scale: 1.1,
+    transition: {
+      repeatType: "mirror",
+      duration: 0.5,
+      repeat: Infinity,
+    },
+  },
+  hover: {
+    scale: 1.1,
+  },
+  tap: {
+    scale: 0.9,
+  },
+}; //Needs fixing.(multiple variants!). scalingLoop animation goes out when whileHover is done
 const Intro = () => {
   const wordsArray = "BEST QUIZ APP".split(" ");
   return (
@@ -24,7 +40,8 @@ const Intro = () => {
         <motion.a
           href='#choose-text-id'
           className='intro-button'
-          variants={buttonVariants}
+          variants={heroButtonVariants}
+          animate='scalingLoop'
           whileHover='hover'
           whileTap='tap'
         >
