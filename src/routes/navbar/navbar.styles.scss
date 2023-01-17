@@ -11,14 +11,26 @@
     font-size: 1.5em;
     color: #ffcc70;
   }
+  .links-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
   span {
     background-color: #0f0c24;
     border-radius: 0.2em;
     cursor: pointer;
-    a {
+    margin: 0 0.2em;
+    a,
+    .sign-up-button {
       padding: 0.5em;
       font-weight: 700;
       font-size: 0.8em;
+    }
+    .sign-up-button {
+      border: none;
+      background-color: transparent;
+      color: #c1436d;
     }
   }
 }
