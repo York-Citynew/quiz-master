@@ -27,10 +27,6 @@ export const CustomTextField = styled(TextField)(styleSelector);
 export const muiStyles = {
   input: {
     color: "#cd688a",
-    "&::placeholder": {
-      // <----- Add this.
-      opacity: 1,
-    },
   },
   label: { color: "#cd688a" },
   width: "100%",

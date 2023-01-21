@@ -17,7 +17,7 @@ const heroButtonVariants = {
   tap: {
     scale: 0.9,
   },
-}; //Needs fixing.(multiple variants!). scalingLoop animation goes out when whileHover is done
+}; //Needs fixing. 1.multiple variants. 2.scalingLoop animation goes out when whileHover is done
 const Intro = () => {
   const wordsArray = "BEST QUIZ APP".split(" ");
   return (

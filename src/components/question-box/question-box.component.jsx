@@ -49,7 +49,7 @@ const QuestionBox = ({
     <div className='question-box-container'>
       <form onSubmit={submitHandler}>
         <CustomFormLabel
-          sx={{ color: "white" }} //needs fixing
+          sx={{ color: "white" }}
           id='question-label'
         >
           {question}
@@ -62,10 +62,10 @@ const QuestionBox = ({
         >
           {shuffledAnswers.map((answer) => (
             <CustomFormControlLabel
-              sx={{ color: "white" }} //needs fixing
+              sx={{ color: "white" }}
               key={answer}
               value={answer}
-              control={<CustomRadio sx={{ color: "white" }} />} //needs fixing
+              control={<CustomRadio sx={{ color: "white" }} />}
               label={answer}
             />
           ))}
