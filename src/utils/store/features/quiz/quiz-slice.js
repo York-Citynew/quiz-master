@@ -6,7 +6,6 @@ const INITIAL_STATE = {
 export const getQuizData = createAsyncThunk(
   "quiz/getQuizData",
   async (payload, thunkAPI) => {
-    // thunkAPI.dispatch(setQuizInfo(payload));
     let categoryCode = "";
     switch (payload.category) {
       case "video games":
