@@ -4,6 +4,7 @@ import "./home.styles.scss";
 import CategoryCards from "../../components/category-cards/category-cards.component";
 import Modal from "../../components/modal/modal.component";
 import GameConfig from "../../components/game-config/game-config.component";
+import SignInConfig from "../../components/sign-in-config/sign-in-config.compoennt";
 import { AnimatePresence } from "framer-motion";
 const CATEGORY_CARDS = [
   {
@@ -32,7 +33,7 @@ const Home = () => {
       <AnimatePresence mode='wait'>
         {isActive && (
           <Modal>
-            <GameConfig />
+            {isActive === "sign in" ? <SignInConfig /> : <GameConfig />}
           </Modal>
         )}
       </AnimatePresence>
