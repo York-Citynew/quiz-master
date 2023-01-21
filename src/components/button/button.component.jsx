@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 export const BUTTON_TYPES = {
   MAIN: "main",
   CANCEL: "cancel",
+  GOOGLE_SIGN_IN: "google-sign-in",
+  ACTIVE_TAB: "active-tab",
 };
 export const buttonVariants = {
   hover: {

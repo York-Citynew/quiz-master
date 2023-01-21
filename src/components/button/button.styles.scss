@@ -1,7 +1,6 @@
 .button {
   border-radius: 99em;
   border: none;
-  font-weight: 700;
   cursor: pointer;
 }
 .intro-button {
@@ -18,13 +17,19 @@
   align-self: flex-end;
 }
 .cancel,
-.main {
+.main,
+.google-sign-in,
+.active-tab {
   font-size: 1em;
   padding: 0.5em 1em;
   margin: 1em 1em;
-  font-weight: 700;
   background-color: rgb(255, 75, 51);
   color: white;
+}
+.main,
+.cancel,
+.active-tab {
+  font-weight: 700;
 }
 .cancel {
   background-color: rgb(255, 75, 51);
@@ -32,4 +37,18 @@
 .main {
   background-color: #c1436d;
   color: white;
+}
+.google-sign-in {
+  background: linear-gradient(
+    45deg,
+    #4285f4 0%,
+    #ea4335 25%,
+    #fbbc05 50%,
+    #34a853 75%,
+    #4285f4 100%
+  );
+  color: white;
+}
+.active-tab {
+  background-color: #34a853;
 }
