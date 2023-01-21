@@ -30,3 +30,11 @@ a {
 ul {
   list-style-type: none;
 }
+.center {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+} /* TODO: migrate all center elements to this class*/
+.error-message {
+  color: rgb(255, 79, 79);
+}
