@@ -8,13 +8,7 @@ import "./leaderboard.styles.scss";
 import { queryScoresData } from "../../utils/firebase/firebase.utils";
 import { useEffect, useState } from "react";
 import Spinner from "../../components/spinner/spinner.component";
-const stringToCamelCase = (str) => {
-  return str
-    .replace(/(?:^\w|[A-Z]|\b\w)/g, function (word, index) {
-      return index == 0 ? word.toLowerCase() : word.toUpperCase();
-    })
-    .replace(/\s+/g, "");
-};
+import { stringToCamelCase } from "../../utils/helpers/helpers";
 const Leaderboard = () => {
   const [leaderboardData, setLeaderboardData] = useState(null);
   const [tab, setTab] = useState("movies");

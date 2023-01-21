@@ -18,6 +18,7 @@ import {
   collection,
 } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
+import { stringToCamelCase } from "../helpers/helpers";
 const firebaseConfig = {
   apiKey: "AIzaSyCttUbUJ29ZheNSgAZnk_Y-bp9UWB-FB_w",
   authDomain: "quiz-master-e4328.firebaseapp.com",
@@ -68,15 +69,18 @@ export const createUserDocumentFromAuth = async (userAuth, name = "") => {
   return userDocRef;
 };
 export const addUserRecord = async (userAuth, score, category) => {
+  category = stringToCamelCase(category.replace("Entertainment: ", ""));
+  category = category === "film" && "movies";
   try {
-    // const userDocRef = doc(db, "users", userAuth.uid);
-    // await setDoc(
-    //   userDocRef,
-    //   {
-    //     scores: { [category]: arrayUnion(score) },
-    //   },
-    //   { merge: true }
-    // );
+    console.log(score, category);
+    const userDocRef = doc(db, "users", userAuth.uid);
+    await setDoc(
+      userDocRef,
+      {
+        scores: { [category]: arrayUnion(score) },
+      },
+      { merge: true }
+    );
   } catch (error) {
     console.log(error);
   }
