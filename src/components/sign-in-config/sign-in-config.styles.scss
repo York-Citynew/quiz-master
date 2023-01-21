@@ -1,0 +1,13 @@
+.sign-in-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1em;
+  & button {
+    margin: 0.2em auto;
+    padding: 0.1em 2em;
+    font-weight: 400;
+    width: 90%;
+  }
+}
