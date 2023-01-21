@@ -5,6 +5,7 @@ import { setQuizData } from "../../utils/store/features/quiz/quiz-slice";
 import Button, { BUTTON_TYPES } from "../../components/button/button.component";
 import Modal from "../../components/modal/modal.component";
 import "./result.styles.scss";
+import { addUserRecord } from "../../utils/firebase/firebase.utils";
 
 const Result = () => {
   const navigate = useNavigate();
@@ -13,19 +14,44 @@ const Result = () => {
     navigate("/");
   };
   const { quizData } = useSelector((state) => state.quiz);
-  console.log(quizData);
-  const score = quizData.filter(
+  const { category, difficulty, duration, tests } = quizData;
+  const { user } = useSelector((state) => state.user);
+  const scoreCalculator = (difficulty, duration, percentage) => {
+    const normalScore = duration * percentage;
+    switch (difficulty) {
+      case "hard":
+        return 2 * normalScore;
+      case "medium":
+        return 1.5 * normalScore;
+      case "easy":
+        return normalScore;
+      default:
+        break;
+    }
+  };
+  const correctAnswers = quizData.tests.filter(
     (item) => item.selectedValue === item.correct_answer
   ).length;
+
   useEffect(() => {
+    const asyncFunc = async () => {
+      await addUserRecord(
+        user,
+        scoreCalculator(difficulty, duration, correctAnswers / tests.length),
+        category
+      );
+    };
+    asyncFunc();
+    if (user) asyncFunc();
     return () => {
-      () => dispatch(setQuizData([])); //not working
+      dispatch(setQuizData([])); //not working properly in strict mode
+      //not working(again)
     };
   }, []);
   return (
     <Modal>
       <div className='result-container'>
-        {quizData.map((item) => (
+        {quizData.tests.map((item) => (
           <div
             key={item.question}
             className='test-result-container'
@@ -40,8 +66,7 @@ const Result = () => {
                         item.selectedValue === option &&
                         item.selectedValue === item.correct_answer
                           ? "win"
-                          : // : "loss"
-                          item.selectedValue === option
+                          : item.selectedValue === option
                           ? "correct"
                           : "loss"
                       }`}
@@ -55,7 +80,7 @@ const Result = () => {
             </ul>
           </div>
         ))}
-        <span>final score: {score}</span>
+        <span>correct answers: {correctAnswers}</span>
       </div>
       <Button
         buttonType={BUTTON_TYPES.MAIN}
