@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import { setIsActive } from "../../utils/store/features/modal/modal-slice";
 import "./modal.styles.scss";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 const backdropVariants = {
   initial: {
     opacity: 0,
@@ -28,6 +28,7 @@ const modalVariants = {
   },
   exit: {
     scale: 0,
+    transition: { duration: 0.05 },
   },
 };
 const Modal = ({ children }) => {
@@ -36,7 +37,6 @@ const Modal = ({ children }) => {
     e.target.className === "backdrop" && dispatch(setIsActive(""));
   };
   return (
-    // <AnimatePresence mode='wait'>
     <motion.div
       variants={backdropVariants}
       initial='initial'
@@ -52,7 +52,6 @@ const Modal = ({ children }) => {
         {children}
       </motion.div>
     </motion.div>
-    // </AnimatePresence>
   );
 };
 export default Modal;
