@@ -37,4 +37,7 @@ ul {
 } /* TODO: migrate all center elements to this class*/
 .error-message {
   color: rgb(255, 79, 79);
+  width: 50%;
+  display: block;
+  text-align: center;
 }
