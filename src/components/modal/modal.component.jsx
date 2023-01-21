@@ -2,6 +2,7 @@ import { useDispatch } from "react-redux";
 import { setIsActive } from "../../utils/store/features/modal/modal-slice";
 import "./modal.styles.scss";
 import { motion } from "framer-motion";
+import { createTheme, ThemeProvider } from "@mui/material";
 const backdropVariants = {
   initial: {
     opacity: 0,
@@ -31,6 +32,9 @@ const modalVariants = {
     transition: { duration: 0.05 },
   },
 };
+const theme = createTheme({
+  primary: "#c1436d",
+});
 const Modal = ({ children }) => {
   const dispatch = useDispatch();
   const backdropCancelHandler = (e) => {
@@ -49,7 +53,7 @@ const Modal = ({ children }) => {
         variants={modalVariants}
         className='modal-container'
       >
-        {children}
+        <ThemeProvider theme={theme}>{children}</ThemeProvider>
       </motion.div>
     </motion.div>
   );

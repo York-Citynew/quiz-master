@@ -3,9 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { setIsActive } from "../../utils/store/features/modal/modal-slice";
 import { getQuizData } from "../../utils/store/features/quiz/quiz-slice";
 import Button, { BUTTON_TYPES } from "../button/button.component";
-import InputLabel from "@mui/material/InputLabel";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
+import "./game-config.styles.scss";
+import {
+  CustomInputLabel,
+  CustomMenuItem,
+  CustomSelect,
+} from "../../mui.styles";
+import { muiStyles } from "../../mui.styles";
 import { useNavigate } from "react-router-dom";
 const OPTIONS_DATA = [
   { label: "quantity", options: [5, 10, 15] },
@@ -18,6 +22,7 @@ const GameConfig = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isActive } = useSelector((state) => state.modal);
+  const { user } = useSelector((state) => state.user);
   const [formData, setFormData] = useState({
     quantity: 5,
     difficulty: "easy",
@@ -41,19 +46,22 @@ const GameConfig = () => {
   };
 
   return (
-    <>
-      <h3>{isActive}</h3>
-      <form onSubmit={submitHandler}>
+    <div className='game-config-container'>
+      <h3 className='game-config-h3'>{isActive}</h3>
+      <form
+        onSubmit={submitHandler}
+        className='game-config-form'
+      >
         {OPTIONS_DATA.map(({ label, options }) => (
-          <div key={label}>
-            <InputLabel
-              sx={{ color: "white", border: "white" }}
-              id={`${label}-label`}
-            >
+          <div
+            key={label}
+            className='game-config-inputs-container'
+          >
+            <CustomInputLabel id={`${label}-label`}>
               {label.toLocaleUpperCase()}
-            </InputLabel>
-            <Select
-              sx={{ color: "white" }}
+            </CustomInputLabel>
+            <CustomSelect
+              sx={muiStyles}
               labelId={`${label}-label`}
               value={formData[label]}
               label={label.toLocaleUpperCase()}
@@ -63,14 +71,14 @@ const GameConfig = () => {
               name={label}
             >
               {options.map((option) => (
-                <MenuItem
+                <CustomMenuItem
                   key={option}
                   value={option}
                 >
                   {option}
-                </MenuItem>
+                </CustomMenuItem>
               ))}
-            </Select>
+            </CustomSelect>
           </div>
         ))}
         <Button
@@ -82,7 +90,12 @@ const GameConfig = () => {
         </Button>
         <Button buttonType={BUTTON_TYPES.MAIN}>Begin</Button>
       </form>
-    </>
+      {!user && (
+        <span className='error-message'>
+          You haven't logged in yet. Progress will not be saved
+        </span>
+      )}
+    </div>
   );
 };
 

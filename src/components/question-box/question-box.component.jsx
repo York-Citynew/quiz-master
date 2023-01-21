@@ -1,7 +1,3 @@
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormLabel from "@mui/material/FormLabel";
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
@@ -10,18 +6,24 @@ import {
 } from "../../utils/store/features/quiz/quiz-slice";
 import Button, { BUTTON_TYPES } from "../button/button.component";
 import { useNavigate } from "react-router-dom";
+import {
+  CustomFormControlLabel,
+  CustomFormLabel,
+  CustomRadio,
+  CustomRadioGroup,
+} from "../../mui.styles";
 const QuestionBox = ({
-  quizData,
+  quizTests,
   setQuestionNumber,
   questionNumber,
   quizLength,
 }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { question, correct_answer, incorrect_answers } = quizData;
+  const { question, correct_answer, incorrect_answers } = quizTests;
   const shuffledAnswers = useCallback(
     [correct_answer, ...incorrect_answers].sort(() => 0.5 - Math.random()),
-    [quizData]
+    [quizTests]
   );
   const cancelHandler = () => {
     dispatch(setQuizData([]));
@@ -46,28 +48,28 @@ const QuestionBox = ({
   return (
     <div className='question-box-container'>
       <form onSubmit={submitHandler}>
-        <FormLabel
-          sx={{ color: "white" }}
+        <CustomFormLabel
+          sx={{ color: "white" }} //needs fixing
           id='question-label'
         >
           {question}
-        </FormLabel>
-        <RadioGroup
+        </CustomFormLabel>
+        <CustomRadioGroup
           row
           aria-labelledby='question-label'
           onChange={handleSelectedOption}
           value={selectedOption}
         >
           {shuffledAnswers.map((answer) => (
-            <FormControlLabel
-              sx={{ color: "white" }}
+            <CustomFormControlLabel
+              sx={{ color: "white" }} //needs fixing
               key={answer}
               value={answer}
-              control={<Radio sx={{ color: "white" }} />}
+              control={<CustomRadio sx={{ color: "white" }} />} //needs fixing
               label={answer}
             />
           ))}
-        </RadioGroup>
+        </CustomRadioGroup>
         <Button buttonType={BUTTON_TYPES.MAIN}>Submit</Button>
         {questionNumber > 0 && (
           <Button
