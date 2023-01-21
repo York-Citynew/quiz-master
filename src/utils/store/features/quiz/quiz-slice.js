@@ -1,11 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 const INITIAL_STATE = {
-  quizData: [],
+  quizData: { difficulty: null, category: null, duration: null, tests: [] },
   isLoading: false,
 };
 export const getQuizData = createAsyncThunk(
   "quiz/getQuizData",
   async (payload, thunkAPI) => {
+    // thunkAPI.dispatch(setQuizInfo(payload));
     let categoryCode = "";
     switch (payload.category) {
       case "video games":
@@ -22,11 +23,20 @@ export const getQuizData = createAsyncThunk(
         break;
     }
     try {
-      const quizRes = await fetch(
+      const res = await fetch(
         `https://opentdb.com/api.php?amount=${payload.quantity}&category=${categoryCode}&difficulty=${payload.difficulty}&type=multiple`
       );
-      const quizData = await quizRes.json();
-      return quizData.results.map((item) => ({ ...item, selectedValue: "" }));
+      const data = await res.json();
+      const tests = await data.results.map((item) => ({
+        ...item,
+        selectedValue: "",
+      }));
+      return {
+        difficulty: tests[0].difficulty,
+        category: tests[0].category,
+        duration: null,
+        tests: tests,
+      };
     } catch (error) {
       thunkAPI.rejectWithValue(error);
     }
@@ -39,10 +49,13 @@ const quizSlice = createSlice({
   reducers: {
     setSelectedValue: (state, { payload }) => {
       const { questionNumber, selectedOption } = payload;
-      state.quizData[questionNumber].selectedValue = selectedOption;
+      state.quizData.tests[questionNumber].selectedValue = selectedOption;
     },
     setQuizData: (state, { payload }) => {
-      state.quizData = payload;
+      state.quizData.tests = payload;
+    },
+    setQuizDataDuration: (state, { payload }) => {
+      state.quizData.duration = payload;
     },
   },
   extraReducers: (builder) => {
@@ -59,5 +72,6 @@ const quizSlice = createSlice({
     });
   },
 });
-export const { setSelectedValue, setQuizData } = quizSlice.actions;
+export const { setSelectedValue, setQuizData, setQuizDataDuration } =
+  quizSlice.actions;
 export default quizSlice.reducer;

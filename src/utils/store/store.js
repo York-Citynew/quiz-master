@@ -4,10 +4,12 @@ import storage from "redux-persist/lib/storage";
 import { persistReducer } from "redux-persist";
 import modalReducer from "./features/modal/modal-slice";
 import quizReducer from "./features/quiz/quiz-slice";
+import userReducer from "./features/user/user-slice";
 
 const rootReducer = combineReducers({
   modal: modalReducer,
   quiz: quizReducer,
+  user: userReducer,
 });
 const persistConfig = {
   key: "root",
