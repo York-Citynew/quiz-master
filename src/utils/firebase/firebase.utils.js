@@ -59,8 +59,7 @@ export const createUserDocumentFromAuth = async (userAuth, name = "") => {
         email,
         displayName: displayName ? displayName : name,
         createdAt,
-        scores: { movies: [], videoGames: [], computers: [] },
-        // scores: {}, // optimization point
+        scores: {},
       });
     } catch (error) {
       console.log(error);
@@ -69,10 +68,11 @@ export const createUserDocumentFromAuth = async (userAuth, name = "") => {
   return userDocRef;
 };
 export const addUserRecord = async (userAuth, score, category) => {
-  category = stringToCamelCase(category.replace("Entertainment: ", ""));
-  category = category === "film" && "movies";
+  category = stringToCamelCase(
+    category.replace("Entertainment: ", "").replace("Science: ", "")
+  );
+  if (category === "film") category = "movies"; //temporary patch
   try {
-    console.log(score, category);
     const userDocRef = doc(db, "users", userAuth.uid);
     await setDoc(
       userDocRef,
@@ -86,6 +86,7 @@ export const addUserRecord = async (userAuth, score, category) => {
   }
 };
 export const queryScoresData = async () => {
+  //unable to paginate data with query cursors. could use subcollections.
   const data = {
     movies: [],
     videoGames: [],
@@ -97,8 +98,6 @@ export const queryScoresData = async () => {
     const docSnapShot = doc.data();
     const objectKeysArray = Object.keys(docSnapShot.scores);
     objectKeysArray.forEach((item) => {
-      // console.log(item);
-      // console.log(data[item]);
       data[item].push({
         name: docSnapShot.displayName,
         highestScore: Math.max(...docSnapShot.scores[item]),
