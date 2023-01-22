@@ -14,7 +14,7 @@ export const getQuizData = createAsyncThunk(
       case "movies":
         categoryCode = 11;
         break;
-      case "technology":
+      case "computers":
         categoryCode = 18;
         break;
 
