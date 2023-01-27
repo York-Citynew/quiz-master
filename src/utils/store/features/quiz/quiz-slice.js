@@ -1,35 +1,19 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { getUserAnswers, getUserTests } from "../../../firebase/firebase.utils";
 const INITIAL_STATE = {
-  quizData: { difficulty: null, category: null, duration: null, tests: [] },
+  quizTests: { difficulty: null, category: null, duration: null, tests: [] },
+  quizAnswers: [],
   isLoading: false,
 };
-export const getQuizData = createAsyncThunk(
-  "quiz/getQuizData",
+export const getTests = createAsyncThunk(
+  "quiz/getTests",
   async (payload, thunkAPI) => {
-    let categoryCode = "";
-    switch (payload.category) {
-      case "video games":
-        categoryCode = 15;
-        break;
-      case "movies":
-        categoryCode = 11;
-        break;
-      case "computers":
-        categoryCode = 18;
-        break;
-
-      default:
-        break;
-    }
     try {
-      const res = await fetch(
-        `https://opentdb.com/api.php?amount=${payload.quantity}&category=${categoryCode}&difficulty=${payload.difficulty}&type=multiple`
-      );
-      const data = await res.json();
-      const tests = await data.results.map((item) => ({
+      let tests = await getUserTests(payload);
+      tests = await tests.map((item) => ({
         ...item,
         selectedValue: "",
-      }));
+      })); // payload is uid
       return {
         difficulty: tests[0].difficulty,
         category: tests[0].category,
@@ -37,6 +21,18 @@ export const getQuizData = createAsyncThunk(
         tests: tests,
       };
     } catch (error) {
+      console.log(error);
+      thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+export const getAnswers = createAsyncThunk(
+  "quiz/getAnswers",
+  async (payload, thunkAPI) => {
+    try {
+      return getUserAnswers(payload); // payload is uid
+    } catch (error) {
+      console.log(error);
       thunkAPI.rejectWithValue(error);
     }
   }
@@ -48,24 +44,35 @@ const quizSlice = createSlice({
   reducers: {
     setSelectedValue: (state, { payload }) => {
       const { questionNumber, selectedOption } = payload;
-      state.quizData.tests[questionNumber].selectedValue = selectedOption;
+      state.quizTests.tests[questionNumber].selectedValue = selectedOption;
     },
     setQuizData: (state, { payload }) => {
-      state.quizData.tests = payload;
+      state.quizTests.tests = payload;
     },
     setQuizDataDuration: (state, { payload }) => {
-      state.quizData.duration = payload;
+      state.quizTests.duration = payload;
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(getQuizData.pending, (state) => {
+    builder.addCase(getTests.pending, (state) => {
       state.isLoading = true;
     });
-    builder.addCase(getQuizData.fulfilled, (state, { payload }) => {
+    builder.addCase(getTests.fulfilled, (state, { payload }) => {
       state.isLoading = false;
-      state.quizData = payload;
+      state.quizTests = payload;
     });
-    builder.addCase(getQuizData.rejected, (state, action) => {
+    builder.addCase(getTests.rejected, (state, action) => {
+      console.log(action);
+      state.isLoading = true;
+    });
+    builder.addCase(getAnswers.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(getAnswers.fulfilled, (state, { payload }) => {
+      state.isLoading = false;
+      state.quizAnswers = payload;
+    });
+    builder.addCase(getAnswers.rejected, (state, action) => {
       console.log(action);
       state.isLoading = true;
     });
