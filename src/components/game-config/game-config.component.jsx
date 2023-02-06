@@ -48,7 +48,6 @@ const GameConfig = () => {
           difficulty: [formData.difficulty],
         }),
       }).then((res) => res.json());
-      console.log(data);
       dispatch(getTests(user.uid));
       dispatch(setIsActive(""));
       navigate("quiz");

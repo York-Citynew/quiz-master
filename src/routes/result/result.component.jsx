@@ -42,7 +42,6 @@ const Result = () => {
         correctAnswersAmount = await quizTests.tests.filter(
           (item, index) => item.selectedValue === quizAnswers[index]
         ).length;
-        console.log(correctAnswersAmount);
         await addUserRecord(
           user,
           scoreCalculator(
