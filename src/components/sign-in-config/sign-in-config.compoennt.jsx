@@ -17,7 +17,8 @@ const INITIAL_FORM_DATA = {
   signUpPassword: "",
   signUpPassword2: "",
 };
-const pwRegEx = "^(?=.*[d])(?=.*[!@#$%^&*])[w!@#$%^&*]{6,16}$";
+const pwRegEx =
+  "/^(?=.*d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*s).{8,16}$/";
 const emailRegEx =
   "^[a-zA-Z0-9.!#$%&'*+=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$";
 const SignInConfig = () => {
@@ -50,7 +51,7 @@ const SignInConfig = () => {
       return;
     } else if (!formData.signUpPassword.match(pwRegEx)) {
       displayError(
-        "Password must be between 6-16 and contain special characters, numbers and normal characters"
+        "Password must be between 8-16 and contain special characters, numbers and both small and capital characters"
       );
       return;
     }

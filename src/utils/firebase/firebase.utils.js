@@ -16,6 +16,7 @@ import {
   getDocs,
   query,
   collection,
+  deleteDoc,
 } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import { stringToCamelCase } from "../helpers/helpers";
@@ -30,7 +31,7 @@ const firebaseConfig = {
 
 initializeApp(firebaseConfig);
 const auth = getAuth();
-export const db = getFirestore(); //fix this
+export const db = getFirestore();
 export const onAuthStateChangedListener = (callbackFn) =>
   onAuthStateChanged(auth, callbackFn);
 export const createUserWithEmailAndPasswordSignUp = async (email, password) => {
@@ -67,6 +68,52 @@ export const createUserDocumentFromAuth = async (userAuth, name = "") => {
   }
   return userDocRef;
 };
+export const createUserQuiz = async (userAuth, tempTests, tempAnswers) => {
+  try {
+    const testsDocRef = doc(db, "users", userAuth.uid, "tempQuiz", "tempTests");
+    await setDoc(
+      testsDocRef,
+      {
+        tempTests,
+      },
+      { merge: true }
+    );
+    const answersDocRef = doc(
+      db,
+      "users",
+      userAuth.uid,
+      "tempQuiz",
+      "tempAnswers"
+    );
+    await setDoc(
+      answersDocRef,
+      {
+        tempAnswers,
+      },
+      { merge: true }
+    );
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const getUserTests = async (uid) => {
+  try {
+    const testsDocRef = doc(db, "users", uid, "tempQuiz", "tempTests");
+    const testsSnapShot = await getDoc(testsDocRef);
+    return testsSnapShot.data().tempTests;
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const getUserAnswers = async (uid) => {
+  try {
+    const answersDocRef = doc(db, "users", uid, "tempQuiz", "tempAnswers");
+    const answersSnapShot = await getDoc(answersDocRef);
+    return answersSnapShot.data().tempAnswers;
+  } catch (error) {
+    console.log(error);
+  }
+};
 export const addUserRecord = async (userAuth, score, category) => {
   category = stringToCamelCase(
     category.replace("Entertainment: ", "").replace("Science: ", "")
@@ -92,23 +139,34 @@ export const queryScoresData = async () => {
     videoGames: [],
     computers: [],
   };
-  const q = query(collection(db, "users"));
-  const querySnapshot = await getDocs(q);
-  querySnapshot.forEach((doc) => {
-    const docSnapShot = doc.data();
-    const objectKeysArray = Object.keys(docSnapShot.scores);
-    objectKeysArray.forEach((item) => {
-      data[item].push({
-        name: docSnapShot.displayName,
-        highestScore: Math.max(...docSnapShot.scores[item]),
+  try {
+    const q = query(collection(db, "users"));
+    const querySnapshot = await getDocs(q);
+    const docs = querySnapshot.docs;
+    docs.forEach((doc) => {
+      const docSnapShot = doc.data();
+      const objectKeysArray = Object.keys(docSnapShot.scores);
+      objectKeysArray.forEach((item) => {
+        data[item].push({
+          name: docSnapShot.displayName,
+          highestScore: Math.max(...docSnapShot.scores[item]),
+        });
       });
     });
-  });
-  return data;
+    return data;
+  } catch (error) {
+    return { error: error };
+  }
 };
 export const userSignInWithEmailAndPassword = (email, password) => {
   signInWithEmailAndPassword(auth, email, password);
 };
 export const userSignOut = async () => {
   await signOut(auth);
+};
+export const deleteUserQuiz = async (userAuth) => {
+  const testsRef = doc(db, "users", userAuth.uid, "tempQuiz", "tempTests");
+  const asnwersRef = doc(db, "users", userAuth.uid, "tempQuiz", "tempAnswers");
+  await deleteDoc(testsRef);
+  await deleteDoc(asnwersRef);
 };

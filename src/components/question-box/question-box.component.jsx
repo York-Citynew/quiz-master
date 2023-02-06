@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import {
   setQuizData,
@@ -20,11 +20,9 @@ const QuestionBox = ({
 }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { question, correct_answer, incorrect_answers } = quizTests;
-  const shuffledAnswers = useCallback(
-    [correct_answer, ...incorrect_answers].sort(() => 0.5 - Math.random()),
-    [quizTests]
-  );
+  const { question, options } = quizTests;
+  const shuffledAnswers = options;
+
   const cancelHandler = () => {
     dispatch(setQuizData([]));
     navigate("/");

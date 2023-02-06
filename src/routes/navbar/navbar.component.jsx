@@ -19,7 +19,9 @@ const Navbar = () => {
     <>
       <div className='navbar-container'>
         <div className='logo-container'>
-          <h1>Quiz Master</h1>
+          <h1>
+            <Link to='/'>Quiz Master</Link>
+          </h1>
         </div>
         <div className='links-container'>
           <span>

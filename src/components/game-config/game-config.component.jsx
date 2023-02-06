@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsActive } from "../../utils/store/features/modal/modal-slice";
-import { getQuizData } from "../../utils/store/features/quiz/quiz-slice";
+import { getTests } from "../../utils/store/features/quiz/quiz-slice";
 import Button, { BUTTON_TYPES } from "../button/button.component";
 import "./game-config.styles.scss";
 import {
@@ -36,8 +36,19 @@ const GameConfig = () => {
   };
   const submitHandler = async (e) => {
     e.preventDefault();
+    if (!user) return;
     try {
-      dispatch(getQuizData(formData));
+      const data = await fetch("/.netlify/functions/get-quiz", {
+        method: "post",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          user,
+          quantity: [formData.quantity],
+          category: [formData.category],
+          difficulty: [formData.difficulty],
+        }),
+      }).then((res) => res.json());
+      dispatch(getTests(user.uid));
       dispatch(setIsActive(""));
       navigate("quiz");
     } catch (error) {
@@ -90,11 +101,7 @@ const GameConfig = () => {
         </Button>
         <Button buttonType={BUTTON_TYPES.MAIN}>Begin</Button>
       </form>
-      {!user && (
-        <span className='error-message'>
-          You haven't logged in yet. Progress will not be saved
-        </span>
-      )}
+      {!user && <span className='error-message'>You must log in first</span>}
     </div>
   );
 };
