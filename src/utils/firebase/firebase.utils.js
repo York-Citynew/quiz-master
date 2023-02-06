@@ -139,19 +139,24 @@ export const queryScoresData = async () => {
     videoGames: [],
     computers: [],
   };
-  const q = query(collection(db, "users"));
-  const querySnapshot = await getDocs(q);
-  querySnapshot.forEach((doc) => {
-    const docSnapShot = doc.data();
-    const objectKeysArray = Object.keys(docSnapShot.scores);
-    objectKeysArray.forEach((item) => {
-      data[item].push({
-        name: docSnapShot.displayName,
-        highestScore: Math.max(...docSnapShot.scores[item]),
+  try {
+    const q = query(collection(db, "users"));
+    const querySnapshot = await getDocs(q);
+    const docs = querySnapshot.docs;
+    docs.forEach((doc) => {
+      const docSnapShot = doc.data();
+      const objectKeysArray = Object.keys(docSnapShot.scores);
+      objectKeysArray.forEach((item) => {
+        data[item].push({
+          name: docSnapShot.displayName,
+          highestScore: Math.max(...docSnapShot.scores[item]),
+        });
       });
     });
-  });
-  return data;
+    return data;
+  } catch (error) {
+    return { error: error };
+  }
 };
 export const userSignInWithEmailAndPassword = (email, password) => {
   signInWithEmailAndPassword(auth, email, password);

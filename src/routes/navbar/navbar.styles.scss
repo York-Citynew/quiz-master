@@ -9,7 +9,9 @@
   align-items: center;
   h1 {
     font-size: 1.5em;
-    color: #ffcc70;
+    a {
+      color: #ffcc70;
+    }
   }
   .links-container {
     display: flex;
