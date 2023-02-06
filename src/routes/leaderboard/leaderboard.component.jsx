@@ -5,7 +5,6 @@ import Button, {
 } from "../../components/button/button.component";
 import { useNavigate } from "react-router-dom";
 import "./leaderboard.styles.scss";
-import { queryScoresData } from "../../utils/firebase/firebase.utils";
 import { useEffect, useState } from "react";
 import Spinner from "../../components/spinner/spinner.component";
 import { stringToCamelCase } from "../../utils/helpers/helpers";
@@ -20,11 +19,16 @@ const Leaderboard = () => {
     setTab(tabCamelCase);
   };
   useEffect(() => {
-    const getLeaderboardData = async () => {
-      const data = await queryScoresData();
-      setLeaderboardData(data);
-    };
-    getLeaderboardData();
+    (async () => {
+      try {
+        const data = await fetch("/.netlify/functions/query-scores").then(
+          (res) => res.json()
+        );
+        setLeaderboardData(data);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
   }, []);
   if (!leaderboardData) return <Spinner />;
   return (
@@ -57,19 +61,21 @@ const Leaderboard = () => {
           </Button>
         </div>
         <div className='table'>
-          {leaderboardData[tab].map((item, index) => (
-            <div
-              className='row'
-              key={index}
-            >
-              <span className='no'>{index}.</span>
-              <span className='name'>{item.name}</span>
-              <span className='score'>{item.highestScore}</span>
-            </div>
-          ))}
+          {leaderboardData[tab]
+            .sort((a, b) => b.highestScore - a.highestScore)
+            .map((item, index) => (
+              <div
+                className='row'
+                key={index}
+              >
+                <span className='no'>{index}.</span>
+                <span className='name'>{item.name}</span>
+                <span className='score'>{item.highestScore}</span>
+              </div>
+            ))}
         </div>
         <div className='handle-nav'>
-          <Button buttonType={BUTTON_TYPES.MAIN}>show more</Button>
+          {/* <Button buttonType={BUTTON_TYPES.MAIN}>show more</Button> */}
           <Button
             onClick={navigateHandler}
             buttonType={BUTTON_TYPES.MAIN}
