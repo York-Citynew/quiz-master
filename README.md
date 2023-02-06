@@ -1,6 +1,7 @@
 ## quiz-master 
-*version: beta*
+*version: 1.0*
 
-- [ ] Serverless functions are going to be added(adding more security and fair play)
+- [X] Serverless functions are going to be added(adding more security and fair play)
 - [ ] debugging performance issues and further optimizations in progress
 - [ ] Responsive web design
+- [ ] email verification
