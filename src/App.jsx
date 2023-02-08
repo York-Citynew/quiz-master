@@ -1,17 +1,22 @@
+import { lazy, Suspense, useEffect } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Navbar from "./routes/navbar/navbar.component";
-import ErrorPage from "./routes/error-page/error-page.component";
-import Home from "./routes/home/home.component";
-import Quiz from "./routes/quiz/quiz.component";
-import Result from "./routes/result/result.component";
-import { useEffect } from "react";
+const Navbar = lazy(() => import("./routes/navbar/navbar.component"));
+const ErrorPage = lazy(() =>
+  import("./routes/error-page/error-page.component")
+);
+const Home = lazy(() => import("./routes/home/home.component"));
+const Quiz = lazy(() => import("./routes/quiz/quiz.component"));
+const Result = lazy(() => import("./routes/result/result.component"));
+const Leaderboard = lazy(() =>
+  import("./routes/leaderboard/leaderboard.component")
+);
 import {
   onAuthStateChangedListener,
   createUserDocumentFromAuth,
 } from "./utils/firebase/firebase.utils";
 import { useDispatch } from "react-redux";
 import { setUser } from "./utils/store/features/user/user-slice";
-import Leaderboard from "./routes/leaderboard/leaderboard.component";
+import Spinner from "./components/spinner/spinner.component";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -37,6 +42,10 @@ const App = () => {
     });
     return unsubscribe;
   }, []);
-  return <RouterProvider router={router} />;
+  return (
+    <Suspense fallback={<Spinner />}>
+      <RouterProvider router={router} />
+    </Suspense>
+  );
 };
 export default App;
